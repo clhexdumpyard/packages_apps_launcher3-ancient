@@ -87,4 +87,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="number_of_rows_title">Grid and app drawer rows</string>
     <string name="number_of_hotseat_title">Homescreen quicklaunch icons</string>
 
+    <!-- Icon packs -->
+    <string name="iconPackPackageDefault" translatable="false">""</string>
+    <string name="icon_pack">Icon pack</string>
+    <string name="icon_pack_summary">Select a custom icon pack</string>
+
 </resources>
