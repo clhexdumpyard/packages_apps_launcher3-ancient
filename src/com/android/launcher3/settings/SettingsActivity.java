@@ -23,7 +23,11 @@ import static com.android.launcher3.states.RotationHelper.ALLOW_ROTATION_PREFERE
 import static com.android.launcher3.states.RotationHelper.getAllowRotationDefaultValue;
 import static com.android.launcher3.util.SecureSettingsObserver.newNotificationSettingsObserver;
 
+import static com.megalith.launcher.OverlayCallbackImpl.KEY_ENABLE_MINUS_ONE;
+
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -34,13 +38,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
-import androidx.preference.Preference.OnPreferenceChangeListener;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceFragmentCompat.OnPreferenceStartFragmentCallback;
 import androidx.preference.PreferenceFragmentCompat.OnPreferenceStartScreenCallback;
 import androidx.preference.PreferenceGroup.PreferencePositionCallback;
 import androidx.preference.PreferenceScreen;
-import androidx.preference.SwitchPreference;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.launcher3.LauncherFiles;
@@ -91,7 +93,11 @@ public class SettingsActivity extends FragmentActivity
     }
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) { }
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (Utilities.KEY_SHOW_SEARCHBAR.equals(key) || Utilities.SHOW_WORKSPACE_GRADIENT.equals(key) || Utilities.SHOW_HOTSEAT_GRADIENT.equals(key))  {
+            Utilities.restart(this);
+        }
+    }
 
     private boolean startFragment(String fragment, Bundle args, String key) {
         if (Utilities.ATLEAST_P && getSupportFragmentManager().isStateSaved()) {
@@ -133,6 +139,10 @@ public class SettingsActivity extends FragmentActivity
         private String mHighLightKey;
         private boolean mPreferenceHighlighted = false;
 
+        protected static final String GSA_PACKAGE = "com.google.android.googlequicksearchbox";
+
+        private Preference mShowGoogleAppPref;
+
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             final Bundle args = getArguments();
@@ -155,14 +165,6 @@ public class SettingsActivity extends FragmentActivity
                     screen.removePreference(preference);
                 }
             }
-
-            SwitchPreference desktopShowQsb = (SwitchPreference) findPreference(Utilities.DESKTOP_SHOW_QSB);
-            desktopShowQsb.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    Utilities.restart(getActivity());
-                    return true;
-                }
-            });
         }
 
         @Override
@@ -218,9 +220,28 @@ public class SettingsActivity extends FragmentActivity
                     // Show if plugins are enabled or flag UI is enabled.
                     return FeatureFlags.showFlagTogglerUi(getContext()) ||
                             PluginManagerWrapper.hasPlugins(getContext());
+
+                case KEY_ENABLE_MINUS_ONE:
+                    mShowGoogleAppPref = preference;
+                    updateIsGoogleAppEnabled();
+                    return true;
             }
 
             return true;
+        }
+
+        public static boolean isGSAEnabled(Context context) {
+            try {
+                return context.getPackageManager().getApplicationInfo(GSA_PACKAGE, 0).enabled;
+            } catch (PackageManager.NameNotFoundException e) {
+                return false;
+            }
+        }
+
+        private void updateIsGoogleAppEnabled() {
+            if (mShowGoogleAppPref != null) {
+                mShowGoogleAppPref.setEnabled(isGSAEnabled(getContext()));
+            }
         }
 
         @Override
@@ -236,6 +257,7 @@ public class SettingsActivity extends FragmentActivity
                     requestAccessibilityFocus(getListView());
                 }
             }
+            updateIsGoogleAppEnabled();
         }
 
         private PreferenceHighlighter createHighlighter() {

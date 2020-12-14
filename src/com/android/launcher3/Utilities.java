@@ -120,22 +120,24 @@ public final class Utilities {
     public static final boolean ATLEAST_OREO =
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
 
-    public static final String DESKTOP_SHOW_QSB = "pref_desktop_show_qsb";
-
-    private static final long WAIT_BEFORE_RESTART = 250;
-
     /**
      * Set on a motion event dispatched from the nav bar. See {@link MotionEvent#setEdgeFlags(int)}.
      */
     public static final int EDGE_NAV_BAR = 1 << 8;
 
     /**
+     * WeebLauncher Additions
+     */
+    public static final String KEY_SHOW_SEARCHBAR = "pref_show_quickspace";
+    private static final long WAIT_BEFORE_RESTART = 250;
+    public static final String SHOW_WORKSPACE_GRADIENT = "pref_show_workspace_grad";
+    public static final String SHOW_HOTSEAT_GRADIENT = "pref_show_hotseat_grad";
+
+    /**
      * Indicates if the device has a debug build. Should only be used to store additional info or
      * add extra logging and not for changing the app behavior.
      */
-    public static final boolean IS_DEBUG_DEVICE =
-            Build.TYPE.toLowerCase(Locale.ROOT).contains("debug") ||
-            Build.TYPE.toLowerCase(Locale.ROOT).equals("eng");
+    public static final boolean IS_DEBUG_DEVICE = false;
 
     public static boolean isDevelopersOptionsEnabled(Context context) {
         return Settings.Global.getInt(context.getApplicationContext().getContentResolver(),
@@ -696,13 +698,20 @@ public final class Utilities {
             return mSize;
         }
     }
+    public static boolean showQSB(Context context) {
+        SharedPreferences prefs = getPrefs(context.getApplicationContext());
+        return prefs.getBoolean(KEY_SHOW_SEARCHBAR, true);
+    }
 
-    public static boolean showDesktopQsb(Context context) {
-        return getPrefs(context).getBoolean(DESKTOP_SHOW_QSB, true);
+    public static boolean showWorkspaceGradient(Context context) {
+        return getPrefs(context).getBoolean(SHOW_WORKSPACE_GRADIENT, true);
+    }
+
+    public static boolean showHotseatGradient(Context context) {
+        return getPrefs(context).getBoolean(SHOW_HOTSEAT_GRADIENT, true);
     }
 
     public static void restart(final Context context) {
-        //ProgressDialog.show(context, null, context.getString(R.string.state_loading), true, false);
         MODEL_EXECUTOR.execute(() -> {
             try {
                 Thread.sleep(WAIT_BEFORE_RESTART);
