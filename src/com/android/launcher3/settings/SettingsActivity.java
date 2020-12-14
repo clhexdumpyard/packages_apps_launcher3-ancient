@@ -94,21 +94,6 @@ public class SettingsActivity extends FragmentActivity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (Utilities.KEY_SHOW_SEARCHBAR.equals(key)) {
-            Utilities.restart(this);
-        }
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (Utilities.KEY_SHOW_SEARCHBAR.equals(key) || Utilities.SHOW_WORKSPACE_GRADIENT.equals(key) || Utilities.SHOW_HOTSEAT_GRADIENT.equals(key))  {
             Utilities.restart(this);
         }
