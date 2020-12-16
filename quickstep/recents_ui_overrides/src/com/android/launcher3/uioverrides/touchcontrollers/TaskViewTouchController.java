@@ -25,7 +25,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.Interpolator;
 
 import com.android.launcher3.AbstractFloatingView;
 import com.android.launcher3.BaseDraggingActivity;
@@ -216,11 +215,7 @@ public abstract class TaskViewTouchController<T extends BaseDraggingActivity>
         long maxDuration = 2 * secondaryLayerDimension;
         int verticalFactor = orientationHandler.getTaskDragDisplacementFactor(mIsRtl);
         int secondaryTaskDimension = orientationHandler.getSecondaryDimension(mTaskBeingDragged);
-        // The interpolator controlling the most prominent visual movement. We use this to determine
-        // whether we passed SUCCESS_TRANSITION_PROGRESS.
-        final Interpolator currentInterpolator;
         if (goingUp) {
-            currentInterpolator = Interpolators.LINEAR;
             mPendingAnimation = mRecentsView.createTaskDismissAnimation(mTaskBeingDragged,
                     true /* animateTaskView */, true /* removeTask */, maxDuration);
 
@@ -230,9 +225,8 @@ public abstract class TaskViewTouchController<T extends BaseDraggingActivity>
 
             mEndDisplacement = -mTaskBeingDragged.getHeight();
         } else {
-            currentInterpolator = Interpolators.ZOOM_IN;
             mPendingAnimation = mRecentsView.createTaskLaunchAnimation(
-                    mTaskBeingDragged, maxDuration, currentInterpolator);
+                    mTaskBeingDragged, maxDuration, Interpolators.ZOOM_IN);
 
             // Since the thumbnail is what is filling the screen, based the end displacement on it.
             View thumbnailView = mTaskBeingDragged.getThumbnail();
@@ -247,9 +241,6 @@ public abstract class TaskViewTouchController<T extends BaseDraggingActivity>
         }
         mCurrentAnimation = mPendingAnimation.createPlaybackController()
                 .setOnCancelRunnable(this::clearState);
-        // Setting this interpolator doesn't affect the visual motion, but is used to determine
-        // whether we successfully reached the target state in onDragEnd().
-        mCurrentAnimation.getTarget().setInterpolator(currentInterpolator);
         onUserControlledAnimationCreated(mCurrentAnimation);
         mCurrentAnimation.getTarget().addListener(this);
         mCurrentAnimation.dispatchOnStart();
