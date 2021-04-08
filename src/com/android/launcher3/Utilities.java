@@ -142,6 +142,7 @@ public final class Utilities {
     public static final String GRID_COLUMNS = "pref_grid_columns";
     public static final String GRID_ROWS = "pref_grid_rows";
     public static final String HOTSEAT_ICONS = "pref_hotseat_icons";
+    public static final String KEY_ALL_APPS_BACKGROUND_ALPHA = "pref_all_apps_scrim_alpha";
 
     /**
      * Indicates if the device has a debug build. Should only be used to store additional info or
@@ -809,6 +810,11 @@ public final class Utilities {
                 break;
         }
         return offset;
+    }
+
+    public static int getAllAppsScrimAlpha(Context context) {
+        SharedPreferences prefs = getPrefs(context.getApplicationContext());
+        return prefs.getInt(KEY_ALL_APPS_BACKGROUND_ALPHA, 100);
     }
 
     public static int getGridColumns(Context context, int fallback) {
