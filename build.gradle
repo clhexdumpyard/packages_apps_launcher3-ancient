@@ -17,7 +17,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.protobuf'
 
 android {
-    compileSdkVersion COMPILE_SDK
+    compileSdkVersion COMPILE_SDK.toInteger()
     buildToolsVersion BUILD_TOOLS_VERSION
 
     defaultConfig {
@@ -148,6 +148,7 @@ dependencies {
     implementation "androidx.dynamicanimation:dynamicanimation:${ANDROID_X_VERSION}"
     implementation "androidx.recyclerview:recyclerview:${ANDROID_X_VERSION}"
     implementation "androidx.preference:preference:${ANDROID_X_VERSION}"
+    implementation PROTOBUF_DEPENDENCY
     implementation project(':IconLoader')
     withQuickstepImplementation project(':SharedLibWrapper')
     implementation fileTree(dir: "${FRAMEWORK_PREBUILTS_DIR}/libs", include: 'launcher_protos.jar')
