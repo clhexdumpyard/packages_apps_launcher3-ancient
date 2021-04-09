@@ -39,7 +39,7 @@ LOCAL_STATIC_ANDROID_LIBRARIES := \
     androidx.recyclerview_recyclerview \
     androidx.dynamicanimation_dynamicanimation \
     androidx.preference_preference \
-    iconloader_base
+    iconloader
 
 LOCAL_STATIC_JAVA_LIBRARIES := \
     LauncherPluginLib \
