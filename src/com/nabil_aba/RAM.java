@@ -10,6 +10,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import android.app.Activity;
 import android.os.Handler;
+import com.android.launcher3.R;
 
 public class RAM extends LinearLayout {
     ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
