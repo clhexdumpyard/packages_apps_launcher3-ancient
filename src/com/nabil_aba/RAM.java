@@ -43,10 +43,10 @@ public class RAM extends LinearLayout {
         long total = memoryInfo.totalMem;
         
         TextView textused = findViewById(R.id.nabil_usedram);
-        textused.setText(nabil(avail) + " " + getResources().getString(R.string.nabil_aba_used));
+        textused.setText(nabil(usage) + " " + getResources().getString(R.string.nabil_aba_used));
         
         TextView textfree = findViewById(R.id.nabil_freeram);
-        textfree.setText(nabil(usage) + " " + getResources().getString(R.string.nabil_aba_free));
+        textfree.setText(nabil(avail) + " " + getResources().getString(R.string.nabil_aba_free));
         
         ProgressBar pb = findViewById(R.id.nabil_aba_ramviewPB);
         pb.setMax(nabilganteng(total / 1048576.0));
