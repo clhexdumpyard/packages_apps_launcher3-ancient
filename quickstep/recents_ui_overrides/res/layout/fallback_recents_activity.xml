@@ -25,10 +25,6 @@
         android:layout_height="match_parent"
         android:clipChildren="false">
          
-        <include
-            android:id="@+id/overview_info_view"
-            layout="@layout/fallback_info_view" />
-         
         <com.android.quickstep.fallback.FallbackRecentsView
             android:id="@id/overview_panel"
             android:layout_width="match_parent"
