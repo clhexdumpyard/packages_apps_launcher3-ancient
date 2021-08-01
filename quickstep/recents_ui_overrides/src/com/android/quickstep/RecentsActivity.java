@@ -82,7 +82,6 @@ public final class RecentsActivity extends StatefulActivity<RecentsState> {
     private RecentsDragLayer mDragLayer;
     private FallbackRecentsView mFallbackRecentsView;
     private OverviewActionsView mActionsView;
-    private View mInfoView;
 
     private Configuration mOldConfig;
 
@@ -97,7 +96,6 @@ public final class RecentsActivity extends StatefulActivity<RecentsState> {
         mDragLayer = findViewById(R.id.drag_layer);
         mFallbackRecentsView = findViewById(R.id.overview_panel);
         mActionsView = findViewById(R.id.overview_actions_view);
-        mInfoView = findViewById(R.id.overview_info_view);
 
         mDragLayer.recreateControllers();
         mFallbackRecentsView.init(mActionsView);
