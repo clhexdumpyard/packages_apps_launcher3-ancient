@@ -70,7 +70,9 @@ public class RAM extends RelativeLayout {
             
             textfree.setText(b);
             textfree.setGravity(Gravity.END);
+            textfree.setVisibility(View.VISIBLE);
             textfree.setPadding(0,0,15,0);
+            
             RelativeLayout.LayoutParams rl = (RelativeLayout.LayoutParams) kotak.getLayoutParams();
             rl.height = 35;
             rl.width = rl.MATCH_PARENT;
@@ -80,12 +82,15 @@ public class RAM extends RelativeLayout {
             kotak.setProgress(nabilganteng(usage / 1048576.0));
 
             bunder.setVisibility(View.GONE);
+            
+            kotak.setVisibility(View.VISIBLE);
         } else if (anu == 2) {
             textused.setText(a);
             textused.setGravity(Gravity.END);
             
             textfree.setText(b);
             textfree.setGravity(Gravity.START);
+            textfree.setVisibility(View.VISIBLE);
             
             bunder.setMax(nabilganteng(total / 1048576.0));
             bunder.setProgress(nabilganteng(usage / 1048576.0));
@@ -97,6 +102,7 @@ public class RAM extends RelativeLayout {
             textused.setGravity(Gravity.CENTER);
             
             textfree.setVisibility(View.GONE);
+            
             bunder.setVisibility(View.GONE);          
             kotak.setVisibility(View.GONE);
         } else {
@@ -105,6 +111,7 @@ public class RAM extends RelativeLayout {
            
             textfree.setText(b);
             textfree.setGravity(Gravity.END);
+            textfree.setVisibility(View.VISIBLE);
             
             RelativeLayout.LayoutParams rl = (RelativeLayout.LayoutParams) kotak.getLayoutParams();
             rl.height = 10;
@@ -117,6 +124,8 @@ public class RAM extends RelativeLayout {
             kotak.setProgress(nabilganteng(usage / 1048576.0));
             
             bunder.setVisibility(View.GONE);
+            
+            kotak.setVisibility(View.VISIBLE);
         }
     }
     
