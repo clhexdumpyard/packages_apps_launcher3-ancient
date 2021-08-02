@@ -83,6 +83,7 @@ public class RAM extends RelativeLayout {
             rl.height = 35;
             rl.width = rl.MATCH_PARENT;
             rl.topMargin = 0;
+            rl.removeRule(RelativeLayout.BELOW);
             
             kotak.setLayoutParams(rl);
             kotak.setMax(nabilganteng(total / 1048576.0));
