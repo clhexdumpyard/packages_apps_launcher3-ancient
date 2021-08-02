@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout
+<com.nabil_aba.RAM
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"> 
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp">
+
     <TextView
+        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="RAM Usage"
         android:textColor="#ffffffff"
         android:id="@+id/ramusage"/>
 
-    <com.nabil_aba.RAM
+    <RelativeLayout
+        android:layout_below="@id/ramusage"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
+        android:layout_height="wrap_content">
+
 
         <ProgressBar
             android:progressDrawable="@drawable/ramkotak_pb"
@@ -66,6 +68,6 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/nabil_freeram"/>
         </LinearLayout>
+    </RelativeLayout>
 
-    </com.nabil_aba.RAM>
-</LinearLayout>
+</com.nabil_aba.RAM>
