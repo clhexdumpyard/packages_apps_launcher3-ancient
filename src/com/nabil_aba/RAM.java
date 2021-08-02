@@ -1,30 +1,42 @@
 package com.nabil_aba;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.os.Handler;
+import android.provider.Settings;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import java.text.DecimalFormat;
-import java.util.Timer;
-import java.util.TimerTask;
-import android.app.Activity;
-import android.os.Handler;
+import android.widget.RelativeLayout;
+import android.view.Gravity;
+import android.database.ContentObserver;
+
 import com.android.launcher3.R;
 
-public class RAM extends LinearLayout {
+public class RAM extends RelativeLayout {
     ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
     ActivityManager activityManager = (ActivityManager) getContext().getSystemService(Context.ACTIVITY_SERVICE);
     String finalValue = "";
+    TextView textused, textfree;
+    ProgressBar kotak, bunder;
+    Handler handler = new Handler();
     
     public RAM(Context c, AttributeSet a) {
-        super(c, a);      
+        super(c, a);
+        RAMobserver ro = new RAMobserver(handler);
+        ro.NabilXSasika();
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        final Handler handler = new Handler();
+        textused = findViewById(R.id.nabil_usedram);
+        textfree = findViewById(R.id.nabil_freeram);
+        kotak = findViewById(R.id.nabil_aba_ramview_kotak);
+        bunder = findViewById(R.id.nabil_aba_ramview_bunder);
+        
         Runnable run = new Runnable() {
             @Override
             public void run() {
@@ -37,20 +49,75 @@ public class RAM extends LinearLayout {
 
     public void nabil_aba() {
         activityManager.getMemoryInfo(memoryInfo);
-        
-        long avail = memoryInfo.availMem;
-        long usage = memoryInfo.totalMem - memoryInfo.availMem;
+          
         long total = memoryInfo.totalMem;
+        long avail = memoryInfo.availMem;
         
-        TextView textused = findViewById(R.id.nabil_usedram);
-        textused.setText(nabil(usage) + " " + getResources().getString(R.string.nabil_aba_used));
+        if (total / 1073741824.0 <= 3) {
+            avail = memoryInfo.availMem + 233832448;
+        }
         
-        TextView textfree = findViewById(R.id.nabil_freeram);
-        textfree.setText(nabil(avail) + " " + getResources().getString(R.string.nabil_aba_free));
+        long usage = total - avail;
         
-        ProgressBar pb = findViewById(R.id.nabil_aba_ramviewPB);
-        pb.setMax(nabilganteng(total / 1048576.0));
-        pb.setProgress(nabilganteng(usage / 1048576.0));
+        String a = nabil(usage) + " " + getResources().getString(R.string.nabil_aba_used);
+        String b = nabil(avail) + " " + getResources().getString(R.string.nabil_aba_free);
+        
+        int anu = Settings.System.getInt(getContext().getContentResolver(), "STYLE_RAM_RECENT", 1);
+        if (anu == 1) {
+            textused.setText(a);
+            textused.setGravity(Gravity.START);
+            textused.setPadding(15,0,0,0);
+            
+            textfree.setText(b);
+            textfree.setGravity(Gravity.END);
+            textfree.setPadding(0,0,15,0);
+            RelativeLayout.LayoutParams rl = (RelativeLayout.LayoutParams) kotak.getLayoutParams();
+            rl.height = 35;
+            rl.width = rl.MATCH_PARENT;
+            
+            kotak.setLayoutParams(rl);
+            kotak.setMax(nabilganteng(total / 1048576.0));
+            kotak.setProgress(nabilganteng(usage / 1048576.0));
+
+            bunder.setVisibility(View.GONE);
+        } else if (anu == 2) {
+            textused.setText(a);
+            textused.setGravity(Gravity.END);
+            
+            textfree.setText(b);
+            textfree.setGravity(Gravity.START);
+            
+            bunder.setMax(nabilganteng(total / 1048576.0));
+            bunder.setProgress(nabilganteng(usage / 1048576.0));
+            bunder.setVisibility(View.VISIBLE);
+            
+            kotak.setVisibility(View.GONE);
+        } else if (anu == 3) {    
+            textused.setText(a + " / " + b);
+            textused.setGravity(Gravity.CENTER);
+            
+            textfree.setVisibility(View.GONE);
+            bunder.setVisibility(View.GONE);          
+            kotak.setVisibility(View.GONE);
+        } else {
+            textused.setText(a);
+            textused.setGravity(Gravity.START);
+           
+            textfree.setText(b);
+            textfree.setGravity(Gravity.END);
+            
+            RelativeLayout.LayoutParams rl = (RelativeLayout.LayoutParams) kotak.getLayoutParams();
+            rl.height = 10;
+            rl.width = rl.MATCH_PARENT;
+            rl.topMargin = 5;
+            rl.addRule(RelativeLayout.BELOW, R.id.nabil_aba_ramview_ll);
+            
+            kotak.setLayoutParams(rl);
+            kotak.setMax(nabilganteng(total / 1048576.0));
+            kotak.setProgress(nabilganteng(usage / 1048576.0));
+            
+            bunder.setVisibility(View.GONE);
+        }
     }
     
     public String nabil(long totalMemory) {
@@ -80,5 +147,21 @@ public class RAM extends LinearLayout {
     public int nabilganteng(double formate) {       
         DecimalFormat twoDecimalFormPB = new DecimalFormat("#");
         return Integer.valueOf(twoDecimalFormPB.format(formate));
+    }
+    
+    public class RAMobserver extends ContentObserver{
+        public RAMobserver(Handler h) {
+            super(h);
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+            onFinishInflate();
+        }
+        
+        public void NabilXSasika() {
+            getContext().getContentResolver().registerContentObserver(Settings.System.getUriFor("STYLE_RAM_RECENT"), false, this);
+        }
     }
 }
