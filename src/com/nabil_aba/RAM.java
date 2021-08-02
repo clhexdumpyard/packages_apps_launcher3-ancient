@@ -65,11 +65,11 @@ public class RAM extends RelativeLayout {
         int anu = Settings.System.getInt(getContext().getContentResolver(), "STYLE_RAM_RECENT", 1);
         if (anu == 1) {
             textused.setText(a);
-            textused.setGravity(Gravity.START);
+            textused.setGravity(Gravity.START | Gravity.CENTER);
             textused.setPadding(15,0,0,0);
             
             textfree.setText(b);
-            textfree.setGravity(Gravity.END);
+            textfree.setGravity(Gravity.END | Gravity.CENTER);
             textfree.setVisibility(View.VISIBLE);
             textfree.setPadding(0,0,15,0);
             
