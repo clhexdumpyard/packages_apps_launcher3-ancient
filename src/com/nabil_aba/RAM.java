@@ -32,6 +32,12 @@ public class RAM extends RelativeLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        int sh = Settings.System.getInt(getContext().getContentResolver(), "SHOWHIDE_RAM_RECENT", 1);
+        if (sh == 1) {
+            setVisibility(View.VISIBLE);
+        } else {
+            setVisibility(View.GONE);
+        }
         textused = findViewById(R.id.nabil_usedram);
         textfree = findViewById(R.id.nabil_freeram);
         kotak = findViewById(R.id.nabil_aba_ramview_kotak);
@@ -171,6 +177,7 @@ public class RAM extends RelativeLayout {
         
         public void NabilXSasika() {
             getContext().getContentResolver().registerContentObserver(Settings.System.getUriFor("STYLE_RAM_RECENT"), false, this);
+            getContext().getContentResolver().registerContentObserver(Settings.System.getUriFor("SHOWHIDE_RAM_RECENT"), false, this);
         }
     }
 }
