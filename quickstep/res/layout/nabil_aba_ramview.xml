@@ -1,46 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical"
-	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
-	android:layout_marginLeft="10dp"
-	android:layout_marginRight="10dp">
-    <com.nabil_aba.RAM
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-	android:layout_marginRight="10dp">
-        <TextView
-            android:layout_width="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"> 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RAM Usage"
+        android:id="@+id/ramusage"/>
+
+    <com.nabil_aba.RAM
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+
+        <ProgressBar
+            android:progressDrawable="@drawable/ramkotak_pb"
+            android:id="@+id/nabil_aba_ramview_kotak"
+            android:layout_width="match_parent"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_height="5dp"/>
+
+        <LinearLayout
+            android:layout_centerVertical="true"
+            android:id="@+id/nabil_aba_ramview_ll"
+            android:layout_below="@id/ramusage"
             android:layout_height="wrap_content"
-            android:text="RAM Usage"
-			/>
-	<RelativeLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:gravity="center">
 
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="Free: "
-			android:id="@+id/nabil_freeram"/>
+            <TextView
+                android:layout_weight="1"
+                android:text="aaa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/nabil_usedram"/>
 
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="Used: "
-			android:layout_alignParentEnd="true"
-			android:id="@+id/nabil_usedram"/>
+            <ProgressBar
+                android:visibility="gone"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/rambunder_bg"
+                android:progressDrawable="@drawable/rambunder_pb"
+                android:id="@+id/nabil_aba_ramview_bunder"
+                android:layout_width="70dp"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_height="70dp"
+                android:scaleX="-1"
+            />
 
-	</RelativeLayout>
+            <TextView
+                android:layout_weight="1"
+                android:text="bbb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/nabil_freeram"/>
+        </LinearLayout>
 
-	<ProgressBar
-        android:id="@+id/nabil_aba_ramviewPB"
-		android:layout_width="match_parent"
-		style="?android:attr/progressBarStyleHorizontal"
-		android:layout_height="wrap_content"/>
     </com.nabil_aba.RAM>
 </LinearLayout>
