@@ -25,7 +25,6 @@ import static com.android.launcher3.OverlayCallbackImpl.KEY_ENABLE_MINUS_ONE;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -143,8 +142,15 @@ public class SettingsActivity extends FragmentActivity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (Utilities.KEY_DT_GESTURE.equals(key)) {
+        switch (key) {
+            case Utilities.KEY_DT_GESTURE:
                 LauncherAppState.getInstanceNoCreate().setNeedsRestart();
+                break;
+            case Utilities.KEY_DOCK_SEARCH:
+                LauncherAppState.getInstanceNoCreate().setNeedsRestart();
+                break;
+            default:
+                break;
         }
     }
 
@@ -198,9 +204,9 @@ public class SettingsActivity extends FragmentActivity
         private boolean mPreferenceHighlighted = false;
         private Preference mDeveloperOptionPref;
 
-        protected static final String GSA_PACKAGE = "com.google.android.googlequicksearchbox";
-
         private Preference mShowGoogleAppPref;
+        private Preference mShowGoogleBarPref;
+
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -309,6 +315,10 @@ public class SettingsActivity extends FragmentActivity
                         }
                     });
                     return true;
+                case Utilities.KEY_DOCK_SEARCH:
+                    mShowGoogleBarPref = preference;
+                    updateIsGoogleAppEnabled();
+                    return true;
             }
 
             return true;
@@ -332,17 +342,12 @@ public class SettingsActivity extends FragmentActivity
             return showPreference;
         }
 
-        public static boolean isGSAEnabled(Context context) {
-            try {
-                return context.getPackageManager().getApplicationInfo(GSA_PACKAGE, 0).enabled;
-            } catch (PackageManager.NameNotFoundException e) {
-                return false;
-            }
-        }
-
         private void updateIsGoogleAppEnabled() {
             if (mShowGoogleAppPref != null) {
-                mShowGoogleAppPref.setEnabled(isGSAEnabled(getContext()));
+                mShowGoogleAppPref.setEnabled(Utilities.isGSAEnabled(getContext()));
+            }
+            if (mShowGoogleBarPref != null) {
+                mShowGoogleBarPref.setEnabled(Utilities.isGSAEnabled(getContext()));
             }
         }
 
